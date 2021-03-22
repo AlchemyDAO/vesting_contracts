@@ -20,12 +20,10 @@ contract DelegatingVester {
   address public recipient;
   uint256 public lastUpdate;
 
-  // factory contract address
-  address public _factoryContract;
 
   constructor() public {
     // Don't allow implementation to be initialized.
-    _factoryContract = address(1);
+    alch = address(1);
   }
 
   function initialize(
@@ -33,12 +31,11 @@ contract DelegatingVester {
     address recipient_,
     uint256 vestingAmount_,
     uint256 vestingBegin_,
-    uint256 vestingEnd_,
-    address factoryContract
+    uint256 vestingEnd_
   ) external
   {
-    require(_factoryContract == address(0), "already initialized");
-    require(factoryContract != address(0), "factory can not be null");
+    require(alch == address(0), "already initialized");
+    require(alch_ != address(0), "factory can not be null");
 
     require(
       vestingBegin_ >= block.timestamp,
@@ -51,7 +48,6 @@ contract DelegatingVester {
 
     alch = alch_;
     recipient = recipient_;
-    _factoryContract = factoryContract;
 
     vestingAmount = vestingAmount_;
     vestingBegin = vestingBegin_;

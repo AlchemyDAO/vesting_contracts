@@ -32,8 +32,7 @@ contract DelegatingVesterFactory {
             recipient_,
             vestingAmount_,
             vestingBegin_,
-            vestingEnd_,
-            address(this)
+            vestingEnd_
         );
 
         emit NewDelegateVester(vester);
@@ -47,7 +46,6 @@ interface IDelegatingVester {
         address recipient_,
         uint256 vestingAmount_,
         uint256 vestingBegin_,
-        uint256 vestingEnd_,
-        address factoryContract
+        uint256 vestingEnd_
     ) external;
 }
