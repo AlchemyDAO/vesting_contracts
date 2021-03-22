@@ -51,6 +51,7 @@ contract DelegatingVester {
 
     alch = alch_;
     recipient = recipient_;
+    _factoryContract = factoryContract;
 
     vestingAmount = vestingAmount_;
     vestingBegin = vestingBegin_;
@@ -75,7 +76,7 @@ contract DelegatingVester {
     recipient = recipient_;
   }
 
-  function claim() external {
+  function claim() public {
     uint256 amount;
     if (block.timestamp >= vestingEnd) {
       amount = IAlch(alch).balanceOf(address(this));
@@ -86,6 +87,14 @@ contract DelegatingVester {
       lastUpdate = block.timestamp;
     }
     IAlch(alch).transfer(recipient, amount);
+  }
+
+  fallback() external payable {
+    claim();
+  }
+
+  receive() external payable {
+    claim();
   }
 }
 
