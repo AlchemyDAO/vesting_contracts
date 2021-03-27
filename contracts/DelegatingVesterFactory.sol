@@ -19,7 +19,7 @@ contract DelegatingVesterFactory {
     }
 
     function DelegatingVesterMint(
-        address alch_,
+        address token_,
         address recipient_,
         uint256 vestingAmount_,
         uint256 vestingBegin_,
@@ -28,7 +28,7 @@ contract DelegatingVesterFactory {
         vester = delegatingVesterImplementation.createClone();
 
         IDelegatingVester(vester).initialize(
-            alch_,
+            token_,
             recipient_,
             vestingAmount_,
             vestingBegin_,
@@ -42,7 +42,7 @@ contract DelegatingVesterFactory {
 
 interface IDelegatingVester {
     function initialize(
-        address alch_,
+        address token_,
         address recipient_,
         uint256 vestingAmount_,
         uint256 vestingBegin_,

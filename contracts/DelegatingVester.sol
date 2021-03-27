@@ -11,7 +11,7 @@ contract DelegatingVester {
 
   using SafeMath for uint256;
 
-  address public alch;
+  address public token;
 
   uint256 public vestingAmount;
   uint256 public vestingBegin;
@@ -23,19 +23,19 @@ contract DelegatingVester {
 
   constructor() public {
     // Don't allow implementation to be initialized.
-    alch = address(1);
+    token = address(1);
   }
 
   function initialize(
-    address alch_,
+    address token_,
     address recipient_,
     uint256 vestingAmount_,
     uint256 vestingBegin_,
     uint256 vestingEnd_
   ) external
   {
-    require(alch == address(0), "already initialized");
-    require(alch_ != address(0), "factory can not be null");
+    require(token == address(0), "already initialized");
+    require(token_ != address(0), "factory can not be null");
 
     require(
       vestingBegin_ >= block.timestamp,
@@ -46,7 +46,7 @@ contract DelegatingVester {
       "DelegatingVester::constructor: vesting end too early"
     );
 
-    alch = alch_;
+    token = token_;
     recipient = recipient_;
 
     vestingAmount = vestingAmount_;
@@ -61,7 +61,7 @@ contract DelegatingVester {
       msg.sender == recipient,
       "DelegatingVester::delegate: unauthorized"
     );
-    IAlch(alch).delegate(delegatee);
+    IToken(token).delegate(delegatee);
   }
 
   function setRecipient(address recipient_) external {
@@ -75,14 +75,14 @@ contract DelegatingVester {
   function claim() public {
     uint256 amount;
     if (block.timestamp >= vestingEnd) {
-      amount = IAlch(alch).balanceOf(address(this));
+      amount = IToken(token).balanceOf(address(this));
     } else {
       amount = vestingAmount.mul(block.timestamp - lastUpdate).div(
         vestingEnd - vestingBegin
       );
       lastUpdate = block.timestamp;
     }
-    IAlch(alch).transfer(recipient, amount);
+    IToken(token).transfer(recipient, amount);
   }
 
   fallback() external payable {
@@ -94,7 +94,7 @@ contract DelegatingVester {
   }
 }
 
-interface IAlch {
+interface IToken {
   function balanceOf(address account) external view returns (uint256);
   function transfer(address dst, uint256 rawAmount) external returns (bool);
   function delegate(address delegatee) external;
