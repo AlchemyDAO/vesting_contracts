@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 /// @title DelegatingVester
 contract DelegatingVester {
   /// @dev The name of this contract
-  string public constant name = "Alchemy Delegating Vesting Contract";
+  string public constant name = "Delegating Vesting Contract";
 
   using SafeMath for uint256;
 
